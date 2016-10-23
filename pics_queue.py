@@ -3,13 +3,13 @@ from boto.s3.key import Key
 
 import records
 
-from settings import S3_BUCKET, AWS_ACCESS_KEY, AWS_SECRET_KEY
+from settings import S3_BUCKET, AWS_ACCESS_KEY, AWS_SECRET_KEY, DB_NAME
 
 from time import sleep
 
 SELECT_STATEMENT = "select * from rpi_camera where uploaded = 0"
 
-MARK_UPLOADED_STATEMENT = "update rpi_camera set uploaded = 1 where row_id = %s"
+MARK_UPLOADED_STATEMENT = "update rpi_camera set uploaded = 1 where rid = %s"
 
 def log_info(statement):
     print statement
@@ -36,15 +36,14 @@ if __name__=="__main__":
 
     while True:
         rows = db.query("select * from rpi_camera where uploaded = 0")
-        if rows:
-            log_info("found %d not uploaded files" % len(rows))
-
+        for row in rows:
             filename = rows[0]["filename"]
-            row_id = rows[0]["id"]
+            row_id = rows[0]["rid"]
 
             log_info("Uploading %s with id %d" % (filename, row_id))
 
             send_to_s3(filename)
             mark_uploaded(db, row_id)
         else:
+            log_info("no rows found")
             sleep(.5)
