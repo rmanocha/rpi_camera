@@ -5,7 +5,9 @@ import records
 
 from time import sleep
 
-S3_BUCKET = "pi-photos-test"
+S3_BUCKET = "" # bucket to upload the photos to
+AWS_ACCESS_KEY = "" # aws_access_key_id
+AWS_SECRET_KEY = "" # aws_secret_access_key
 
 SELECT_STATEMENT = "select * from rpi_camera where uploaded = 0"
 
