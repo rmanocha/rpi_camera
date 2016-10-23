@@ -1,0 +1,11 @@
+S3_BUCKET = "" # bucket to upload the photos to
+AWS_ACCESS_KEY = "" # aws_access_key_id
+AWS_SECRET_KEY = "" # aws_secret_access_key
+
+CAMERA_RESOLUTION = (1024, 768)
+
+DB_NAME = "" # sqlite db name. always in the current directory
+
+NUM_IMAGES = 10 # number of images to take each time motion is detected
+
+MOTION_PIN = 0 # GPIO pin to use for the motion detector

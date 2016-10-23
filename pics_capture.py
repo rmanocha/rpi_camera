@@ -3,15 +3,9 @@ import records
 
 from picamera import PiCamera
 
+from settings import CAMERA_RESOLUTION, DB_NAME, MOTION_PIN
+
 from time import sleep
-
-CAMERA_RESOLUTION = (1024, 768)
-
-DB_LOCATION = "" # current directory
-
-NUM_IMAGES = 10 # number of images to take each time motion is detected
-
-MOTION_PIN = 0 # GPIO pin to use for the motion detector
 
 def get_filename():
     return arrow.utcnow().format("YYYY-MM-DD-HH-mm-ss") + ".jpeg"
@@ -45,7 +39,7 @@ def detect_motion():
 if __name__=="__main__":
     camera = get_camera()
 
-    db = records.Database("sqlite:///rpi_camera.db")
+    db = records.Database("sqlite:///" + DB_NAME)
 
     while True:
         if detect_motion():

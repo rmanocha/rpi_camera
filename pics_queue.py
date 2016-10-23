@@ -3,11 +3,9 @@ from boto.s3.key import Key
 
 import records
 
-from time import sleep
+from settings import S3_BUCKET, AWS_ACCESS_KEY, AWS_SECRET_KEY
 
-S3_BUCKET = "" # bucket to upload the photos to
-AWS_ACCESS_KEY = "" # aws_access_key_id
-AWS_SECRET_KEY = "" # aws_secret_access_key
+from time import sleep
 
 SELECT_STATEMENT = "select * from rpi_camera where uploaded = 0"
 
@@ -19,7 +17,7 @@ def log_info(statement):
 def send_to_s3(filename):
     log_info("Uploading %s" % filename)
 
-    conn = S3Connection()
+    conn = S3Connection(AWS_ACCESS_KEY, AWS_SECRET_KEY)
 
     bucket = conn.get_bucket(S3_BUCKET)
 
@@ -34,7 +32,7 @@ def mark_uploaded(db, row_id):
     log_info("Marked row %d as uploaded" % row_id)
 
 if __name__=="__main__":
-    db = records.Database("sqlite:///rpi_camera.db")
+    db = records.Database("sqlite:///" + DB_NAME)
 
     while True:
         rows = db.query("select * from rpi_camera where uploaded = 0")
