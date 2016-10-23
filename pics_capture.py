@@ -1,6 +1,8 @@
 import arrow
 import records
 
+from motion_detect import detect_motion
+
 from picamera import PiCamera
 
 from settings import CAMERA_RESOLUTION, DB_NAME, MOTION_PIN
@@ -33,9 +35,6 @@ def capture_image(camera):
 def capture_queue_image(db, camera):
     insert_new_row(db, capture_image(camera))
 
-def detect_motion():
-    return true
-
 if __name__=="__main__":
     camera = get_camera()
 
@@ -43,6 +42,7 @@ if __name__=="__main__":
 
     while True:
         if detect_motion():
+            log_info("detected motion")
             for i in range(0, 10):
                 capture_queue_image(db, camera)
         else:
