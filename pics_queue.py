@@ -37,13 +37,17 @@ if __name__=="__main__":
     while True:
         rows = db.query("select * from rpi_camera where uploaded = 0")
         for row in rows:
-            filename = rows[0]["filename"]
-            row_id = rows[0]["rid"]
+            filename = row["filename"]
+            row_id = row["rid"]
 
             log_info("Uploading %s with id %d" % (filename, row_id))
 
-            send_to_s3(filename)
-            mark_uploaded(db, row_id)
+            try:
+                send_to_s3(filename)
+                mark_uploaded(db, row_id)
+            except Exception as e:
+                log_info("error uploading and marking the file")
+                log_info(e)
         else:
             log_info("no rows found")
             sleep(.5)

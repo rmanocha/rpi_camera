@@ -10,13 +10,13 @@ from settings import CAMERA_RESOLUTION, DB_NAME, MOTION_PIN
 from time import sleep
 
 def get_filename():
-    return arrow.utcnow().format("YYYY-MM-DD-HH-mm-ss") + ".jpeg"
+    return arrow.utcnow().format("YYYY-MM-DD-HH-mm-ss-SSS") + ".jpeg"
 
 def insert_new_row(db, filename):
     db.query("insert into rpi_camera(created_ts, updated_ts, filename, " + 
             "uploaded) values (:created_ts, :updated_ts, :filename, :uploaded)",
             created_ts=arrow.utcnow(), updated_ts=arrow.utcnow(),
-            filename=filename, 0)
+            filename=filename, uploaded=0)
     log_info("inserted new row for %s" % filename)
 
 def get_camera():
